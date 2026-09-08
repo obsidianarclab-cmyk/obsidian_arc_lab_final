@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse anime-inspired 3D printed collectibles by Obsidian Arc Lab.">
+  <title>Anime Collection | Obsidian Arc Lab</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="statues.css">
+  <link rel="stylesheet" href="professional.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="contact-choice.css">
+</head>
+<body class="statues-page anime-collection-page">
+  <header class="navbar">
+    <a class="logo" href="index.html" aria-label="Obsidian Arc Lab home">Obsidian Arc Lab<span>EST. 2026</span></a>
+    <button class="mobile-nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+  <nav aria-label="Main navigation"><a href="index.html">HOME</a><a href="collection.html">COLLECTION</a><a href="atelier.html">OUR STORY</a><a href="commission.html">CUSTOM ORDER</a><a class="admin-link" href="admin-login.html">ADMIN LOGIN</a></nav>
+  </header>
+
+  <main>
+    <section class="statue-hero anime-hero-premium">
+      <p class="statue-eyebrow">THE CHARACTER SERIES</p>
+      <h1>Icons, shaped<br><em>layer by layer.</em></h1>
+      <p class="statue-intro">Anime-inspired 3D printed displays for collectors, meaningful gifts and character-themed spaces.</p>
+    </section>
+
+    <section class="statue-list" aria-label="Anime product catalogue">
+      <article class="statue-card" tabindex="0" role="button" onclick="openAnimeProduct()" onkeydown="openAnimeWithKeyboard(event)">
+        <div class="statue-card__image">
+          <img src="anime.jpeg" alt="One Piece anime character lineup 3D display">
+          <span class="statue-card__view">VIEW DETAILS <b>↗</b></span>
+        </div>
+        <div class="statue-card__body"><p>3D PRINTED ANIME DISPLAY</p><h2>Character Lineup</h2><span>Made to order · Custom sizing</span></div>
+      </article>
+
+      <article class="statue-card anime-request-card" tabindex="0" role="button" onclick="askAnimeWhatsapp()" onkeydown="requestAnimeWithKeyboard(event)">
+        <div class="anime-request-card__art"><span>＋</span><p>CUSTOM CHARACTER</p></div>
+        <div class="statue-card__body"><p>YOUR IDEA, OUR CRAFT</p><h2>Request a Character</h2><span>Share your reference, size and colour</span></div>
+      </article>
+    </section>
+  </main>
+
+  <div id="animeModal" class="statue-modal" role="dialog" aria-modal="true" aria-labelledby="animeProductName" onclick="closeAnimeOnBackdrop(event)">
+    <div class="statue-modal__box">
+      <button class="statue-modal__close" type="button" onclick="closeAnimeProduct()" aria-label="Close product details">×</button>
+      <div class="statue-modal__grid">
+        <div class="statue-gallery">
+          <div class="statue-gallery__main"><img id="animeMainImg" src="anime.jpeg" alt="Anime character lineup product view"><span>PRODUCT VIEW</span></div>
+          <div class="statue-gallery__thumbs"><button type="button" class="is-active"><img src="anime.jpeg" alt="Anime character lineup view"></button></div>
+        </div>
+        <div class="statue-details">
+          <p class="statue-eyebrow">OBSIDIAN ARC LAB</p>
+          <h2 id="animeProductName">Character Lineup</h2>
+          <p class="statue-details__desc">A statement anime display featuring an iconic character lineup, carefully 3D printed for collectors and themed décor.</p>
+          <dl class="statue-specs"><div><dt>Size</dt><dd>Custom sizes available</dd></div><div><dt>Material</dt><dd>Premium PLA / PLA+</dd></div><div><dt>Finish</dt><dd>Colour options available</dd></div></dl>
+          <p class="custom-choice-note"><strong>Made for you</strong>Character, size and colour can be customised according to your choice. Send us your preferred reference on WhatsApp.</p>
+          <button class="statue-whatsapp" type="button" onclick="askAnimeWhatsapp()"><span>ASK ON WHATSAPP</span><b>↗</b></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="statue-footer"><span>OBSIDIAN ARC LAB</span><p>Made with precision · Penang, Malaysia</p></footer>
+  <script src="anime.js"></script><script src="catalogue.js"></script>
+<script src="contact-choice.js"></script>
+<script src="mobile-nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Personalised 3D printed keychains and name tags by Obsidian Arc Lab.">
+  <title>Keychains | Obsidian Arc Lab</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="statues.css">
+  <link rel="stylesheet" href="keychains.css">
+  <link rel="stylesheet" href="professional.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="contact-choice.css">
+</head>
+
+<body class="statues-page keychains-page">
+  <header class="navbar">
+    <a class="logo" href="index.html" aria-label="Obsidian Arc Lab home">
+      Obsidian Arc Lab
+      <span>EST. 2026</span>
+    </a>
+
+    <button class="mobile-nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+  <nav aria-label="Main navigation">
+      <a href="index.html">HOME</a>
+      <a href="collection.html">COLLECTION</a>
+      <a href="atelier.html">OUR STORY</a>
+      <a href="commission.html">CUSTOM ORDER</a>
+      <a class="admin-link" href="admin-login.html">ADMIN LOGIN</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="statue-hero keychain-hero">
+      <p class="statue-eyebrow">PERSONALISED COLLECTION</p>
+      <h1>Small detail.<br><em>Made yours.</em></h1>
+      <p class="statue-intro">Custom 3D printed name tags designed with your initial, name and preferred colour combination.</p>
+    </section>
+
+    <section class="statue-list keychain-list" aria-label="Keychain catalogue">
+      <article class="statue-card keychain-card" tabindex="0" role="button" onclick="openProduct()" onkeydown="openWithKeyboard(event)">
+        <div class="statue-card__image keychain-card__image">
+          <img src="custom-initial-tag-t-clean.jpg" alt="Custom initial name tag with letter T and personalised name">
+          <span class="statue-card__view">VIEW DETAILS <b>↗</b></span>
+        </div>
+        <div class="statue-card__body">
+          <p>PERSONALISED 3D NAME TAG</p>
+          <h2>Custom Initial Name Tag</h2>
+          <span>7 cm · Custom text &amp; colour</span>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div id="productModal" class="statue-modal" role="dialog" aria-modal="true" aria-labelledby="productName" onclick="closeOnBackdrop(event)">
+    <div class="statue-modal__box">
+      <button class="statue-modal__close" type="button" onclick="closeProduct()" aria-label="Close product details">×</button>
+
+      <div class="statue-modal__grid">
+        <div class="statue-gallery">
+          <div class="statue-gallery__main keychain-gallery__main">
+            <img id="mainImg" src="custom-initial-tag-t-clean.jpg" alt="Custom initial name tag product view">
+            <span id="viewLabel">T DESIGN</span>
+          </div>
+
+          <div id="angleRow" class="statue-gallery__thumbs keychain-thumbs" aria-label="Product image views">
+            <button type="button" class="is-active" onclick="changeAngle(0)" aria-label="Show T design">
+              <img src="custom-initial-tag-t-clean.jpg" alt="Custom initial name tag T design">
+            </button>
+            <button type="button" onclick="changeAngle(1)" aria-label="Show N design">
+              <img src="custom-initial-tag-n-clean.jpg" alt="Custom initial name tag N design">
+            </button>
+          </div>
+        </div>
+
+        <div class="statue-details keychain-details">
+          <p class="statue-eyebrow">OBSIDIAN ARC LAB</p>
+          <h2 id="productName">Custom Initial Name Tag</h2>
+          <p class="statue-details__desc">Personalised round tag with a bold initial, handwritten-style name and premium two-colour 3D printed finish.</p>
+
+          <dl class="statue-specs">
+            <div><dt>Size</dt><dd>7 cm</dd></div>
+            <div><dt>Material</dt><dd>PLA</dd></div>
+            <div><dt>Weight</dt><dd>Approx. 40 g</dd></div>
+          </dl>
+
+          <div class="keychain-custom-box">
+            <p>MADE FOR YOU</p>
+            <h3>Your text. Your colours.</h3>
+            <span>Choose your initial, name and preferred colour combination. Share the details with us on WhatsApp.</span>
+          </div>
+
+          <button class="statue-whatsapp" type="button" onclick="askWhatsapp()">
+            <span>ASK ON WHATSAPP</span><b>↗</b>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="statue-footer">
+    <span>OBSIDIAN ARC LAB</span>
+    <p>Made with precision · Penang, Malaysia</p>
+  </footer>
+
+  <script>
+    const keychainImages = [
+      { label: "T design", src: "custom-initial-tag-t-clean.jpg" },
+      { label: "N design", src: "custom-initial-tag-n-clean.jpg" }
+    ];
+
+    function openWithKeyboard(event) {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openProduct();
+      }
+    }
+
+    function openProduct() {
+      changeAngle(0);
+      document.getElementById("productModal").classList.add("is-open");
+      document.body.style.overflow = "hidden";
+      document.querySelector(".statue-modal__close").focus();
+    }
+
+    function changeAngle(index) {
+      const image = keychainImages[index];
+      if (!image) return;
+
+      const mainImage = document.getElementById("mainImg");
+      mainImage.src = image.src;
+      mainImage.alt = `Custom Initial Name Tag ${image.label}`;
+      document.getElementById("viewLabel").textContent = image.label.toUpperCase();
+
+      document.querySelectorAll("#angleRow button").forEach((button, buttonIndex) => {
+        button.classList.toggle("is-active", buttonIndex === index);
+      });
+    }
+
+    function closeProduct() {
+      document.getElementById("productModal").classList.remove("is-open");
+      document.body.style.overflow = "";
+    }
+
+    function closeOnBackdrop(event) {
+      if (event.target.id === "productModal") closeProduct();
+    }
+
+    function askWhatsapp() {
+      const message = "Hello Obsidian Arc Lab, I would like to enquire about the Custom Initial Name Tag. I would like to customise the initial, name and colour combination.";
+      openWhatsAppChoice(message);
+    }
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeProduct();
+    });
+  </script>
+  <script src="catalogue.js"></script>
+  <script src="contact-choice.js"></script>
+<script src="mobile-nav.js"></script>
+</body>
+</html>
