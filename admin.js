@@ -95,15 +95,31 @@ async function loadGoogleSheets(){
     const result=await response.json();
     if(!result.ok)throw new Error(result.error||'Unable to load Google Sheets');
     const firstUploads=[];
-    ['orders','expenses','products','inventory'].forEach(type=>{
+    ['orders','expenses','products','inventory','work'].forEach(type=>{
       const remote=Array.isArray(result.data[type])?result.data[type]:[];
       if(remote.length){
         const localById=new Map((data[type]||[]).map(item=>[String(item.id),item]));
         data[type]=remote.map(item=>({...localById.get(String(item.id)),...item}));
-      }else if(data[type].length){
+      }else if((data[type]||[]).length){
         firstUploads.push(sheetsRequest({action:'replaceAll',type,records:data[type]}));
       }
     });
+
+    const remoteSettings=Array.isArray(result.data.settings)?result.data.settings:[];
+    if(remoteSettings.length){
+      const setting=remoteSettings.find(item=>String(item.id)==='company')||remoteSettings[0];
+      data.settings.companyBalance=Number(setting.companyBalance||0);
+      data.settings.companyBalanceNote=setting.companyBalanceNote||'';
+      data.settings.companyBalanceUpdated=setting.companyBalanceUpdated||'';
+    }else if(data.settings.companyBalance||data.settings.companyBalanceNote||data.settings.companyBalanceUpdated){
+      firstUploads.push(sheetsRequest({action:'upsert',type:'settings',record:{
+        id:'company',
+        companyBalance:Number(data.settings.companyBalance||0),
+        companyBalanceNote:data.settings.companyBalanceNote||'',
+        companyBalanceUpdated:data.settings.companyBalanceUpdated||new Date().toISOString()
+      }}));
+    }
+
     await Promise.all(firstUploads);
     localStorage.setItem(KEY,JSON.stringify(data));render();setSyncStatus(firstUploads.length?'Connected — existing records uploaded':'Connected to Google Sheets');
   }catch(error){setSyncStatus(error.message,true)}
@@ -205,6 +221,8 @@ document.getElementById('workForm').onsubmit=e=>{
   item.created=existing?.created||new Date().toISOString();
   item.updated=new Date().toISOString();
   storeRecord('work',item);
+  setSyncStatus('Saving Work & Notes to Google Sheets…');
+  syncRecord('work',item);
   resetForm('work');
   save();
 };
@@ -227,6 +245,12 @@ document.getElementById('balanceForm').onsubmit=e=>{
   data.settings.companyBalance=Math.max(Number(values.balance||0),0);
   data.settings.companyBalanceNote=values.note.trim();
   data.settings.companyBalanceUpdated=new Date().toISOString();
+  syncRecord('settings',{
+    id:'company',
+    companyBalance:data.settings.companyBalance,
+    companyBalanceNote:data.settings.companyBalanceNote,
+    companyBalanceUpdated:data.settings.companyBalanceUpdated
+  });
   closeBalanceEditor();
   save();
 };
@@ -380,7 +404,7 @@ function editRecord(type,id){
 function del(type,id){
   if(confirm('Delete this record?')){
     data[type]=data[type].filter(x=>x.id!==id);
-    if(['orders','expenses','products','inventory'].includes(type)){
+    if(['orders','expenses','products','inventory','work'].includes(type)){
       sheetsRequest({action:'delete',type,id}).then(()=>setSyncStatus('Deleted from Google Sheets')).catch(error=>setSyncStatus(error.message,true));
     }
     save();
@@ -390,7 +414,10 @@ function del(type,id){
 function markWorkDone(id){
   const item=data.work.find(x=>x.id===id);
   if(!item)return;
-  item.status='Done';item.updated=new Date().toISOString();save();
+  item.status='Done';
+  item.updated=new Date().toISOString();
+  syncRecord('work',item);
+  save();
 }
 
 function actions(type,id){
