@@ -1,7 +1,7 @@
 if(sessionStorage.getItem('oa_admin')!=='yes') location.replace('admin-login.html');
 
 const KEY='obsidian_arc_records_v1';
-const SHEETS_WEB_APP_URL='https://script.google.com/macros/s/AKfycbzJM9QHAURGPbDB86Ua-qHyNXIH_PuSEEs8p_Fo7cLzH7PSc2lkixD3if3V5LOQLuRn/exec';
+const SHEETS_WEB_APP_URL='https://script.google.com/macros/s/AKfycbzkr3oOSNeAC22AmViq0fYq9l-e32QcMooLFs17KoKtGBuLQiXO4hFFKDXNb7URZbtB/exec';
 const SHEETS_API_KEY='Obsidian_Arc_Lab_Record';
 const sheetsEnabled=()=>SHEETS_WEB_APP_URL.startsWith('https://script.google.com/macros/s/')&&SHEETS_WEB_APP_URL.endsWith('/exec');
 let data=JSON.parse(localStorage.getItem(KEY)||'{"orders":[],"expenses":[],"products":[],"inventory":[],"work":[],"settings":{}}');
@@ -91,37 +91,33 @@ async function loadGoogleSheets(){
   if(!sheetsEnabled()){setSyncStatus('Google Sheets not connected');return}
   setSyncStatus('Loading Google Sheets…');
   try{
-    const response=await fetch(`${SHEETS_WEB_APP_URL}?key=${encodeURIComponent(SHEETS_API_KEY)}`);
+    // Google Sheets is the master copy. A successful refresh must replace the
+    // browser copy, even when a sheet is empty. This prevents an old device
+    // from re-uploading a record that was deleted on another device.
+    const url=`${SHEETS_WEB_APP_URL}?key=${encodeURIComponent(SHEETS_API_KEY)}&_=${Date.now()}`;
+    const response=await fetch(url,{cache:'no-store'});
     const result=await response.json();
     if(!result.ok)throw new Error(result.error||'Unable to load Google Sheets');
-    const firstUploads=[];
+
     ['orders','expenses','products','inventory','work'].forEach(type=>{
-      const remote=Array.isArray(result.data[type])?result.data[type]:[];
-      if(remote.length){
-        const localById=new Map((data[type]||[]).map(item=>[String(item.id),item]));
-        data[type]=remote.map(item=>({...localById.get(String(item.id)),...item}));
-      }else if((data[type]||[]).length){
-        firstUploads.push(sheetsRequest({action:'replaceAll',type,records:data[type]}));
-      }
+      data[type]=Array.isArray(result.data[type])?result.data[type]:[];
     });
 
     const remoteSettings=Array.isArray(result.data.settings)?result.data.settings:[];
     if(remoteSettings.length){
       const setting=remoteSettings.find(item=>String(item.id)==='company')||remoteSettings[0];
-      data.settings.companyBalance=Number(setting.companyBalance||0);
-      data.settings.companyBalanceNote=setting.companyBalanceNote||'';
-      data.settings.companyBalanceUpdated=setting.companyBalanceUpdated||'';
-    }else if(data.settings.companyBalance||data.settings.companyBalanceNote||data.settings.companyBalanceUpdated){
-      firstUploads.push(sheetsRequest({action:'upsert',type:'settings',record:{
-        id:'company',
-        companyBalance:Number(data.settings.companyBalance||0),
-        companyBalanceNote:data.settings.companyBalanceNote||'',
-        companyBalanceUpdated:data.settings.companyBalanceUpdated||new Date().toISOString()
-      }}));
+      data.settings={
+        companyBalance:Number(setting.companyBalance||0),
+        companyBalanceNote:setting.companyBalanceNote||'',
+        companyBalanceUpdated:setting.companyBalanceUpdated||''
+      };
+    }else{
+      data.settings={companyBalance:0,companyBalanceNote:'',companyBalanceUpdated:''};
     }
 
-    await Promise.all(firstUploads);
-    localStorage.setItem(KEY,JSON.stringify(data));render();setSyncStatus(firstUploads.length?'Connected — existing records uploaded':'Connected to Google Sheets');
+    localStorage.setItem(KEY,JSON.stringify(data));
+    render();
+    setSyncStatus('Synced with Google Sheets');
   }catch(error){setSyncStatus(error.message,true)}
 }
 
