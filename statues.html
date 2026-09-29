@@ -39,7 +39,7 @@
       <p class="statue-intro">Thoughtfully printed statues for prayer spaces, meaningful gifts and refined home décor.</p>
     </section>
 
-    <section class="statue-list" aria-label="Statue catalogue">
+    <!-- <section class="statue-list" aria-label="Statue catalogue">
       <article class="statue-card" tabindex="0" role="button" onclick="openProduct('ganesha')" onkeydown="openWithKeyboard(event, 'ganesha')">
         <div class="statue-card__image">
           <img src="mini-ganesha-details.jpg" alt="Mini Ganesha product details and 5 cm available size">
@@ -50,9 +50,9 @@
           <h2>Mini Ganesha</h2>
           <span>5 cm height · White, black or gold</span>
         </div>
-      </article>
+      </article> -->
 
-      <article class="statue-card" tabindex="0" role="button" onclick="openProduct('anjaneya')" onkeydown="openWithKeyboard(event, 'anjaneya')">
+      <!-- <article class="statue-card" tabindex="0" role="button" onclick="openProduct('anjaneya')" onkeydown="openWithKeyboard(event, 'anjaneya')">
         <div class="statue-card__image">
           <img src="mini-hanuman-main.jpg" alt="Mini Hanuman 3D printed statue and available sizes">
           <span class="statue-card__view">VIEW DETAILS <b>↗</b></span>
@@ -61,9 +61,11 @@
           <p>3D PRINTED STATUE</p>
           <h2>Mini Hanuman</h2>
           <span>Silky white · Matte white · Three size groups</span>
-          <!-- <span>Four-angle product view</span> -->
-        </div>
-      </article>
+          <span>Four-angle product view</span> -->
+        <!-- </div>
+      </article> --> 
+
+      <section class="statue-list" aria-label="Statue catalogue">
 
       <article class="statue-card" tabindex="0" role="button" onclick="openProduct('buddha')" onkeydown="openWithKeyboard(event, 'buddha')">
         <div class="statue-card__image">
@@ -74,8 +76,20 @@
         </div>
         <div class="statue-card__body">
           <p>3D PRINTED STATUE</p>
-          <h2>Mini Buddha</h2>
+          <h2>Buddha</h2>
           <span>Gold and white finish</span>
+        </div>
+      </article>
+
+      <article class="statue-card" tabindex="0" role="button" onclick="openSaiBaba()" onkeydown="openSaiBabaWithKeyboard(event)">
+        <div class="statue-card__image">
+          <img src="sai-baba-details.jpeg" alt="Sai Baba 3D printed statue with available sizes and finishes">
+          <span class="statue-card__view">VIEW DETAILS <b>↗</b></span>
+        </div>
+        <div class="statue-card__body">
+          <p>3D PRINTED STATUE</p>
+          <h2>Sai Baba</h2>
+          <span>5–19 cm · Pearlescent white</span>
         </div>
       </article>
     </section>
@@ -118,6 +132,57 @@
     </div>
   </div>
 
+
+  <!-- Sai Baba product details -->
+  <div id="saiBabaModal" class="statue-modal" role="dialog" aria-modal="true" aria-labelledby="saiBabaProductName" onclick="closeSaiBabaOnBackdrop(event)" style="display:none;">
+    <div class="statue-modal__box">
+      <button class="statue-modal__close" type="button" onclick="closeSaiBaba()" aria-label="Close Sai Baba product details">×</button>
+
+      <div class="statue-modal__grid">
+        <div class="statue-gallery">
+          <div class="statue-gallery__main">
+            <img id="saiBabaMainImg" src="sai-baba-main.jpeg" alt="Sai Baba 3D printed statue">
+            <span id="saiBabaViewLabel">MAIN VIEW</span>
+          </div>
+          <div class="statue-gallery__thumbs" aria-label="Sai Baba product image views">
+            <button type="button" onclick="changeSaiBabaImage('sai-baba-main.jpeg', 'MAIN VIEW')" aria-label="Show Sai Baba main view">
+              <img src="sai-baba-main.jpeg" alt="Sai Baba main view thumbnail">
+            </button>
+            <button type="button" onclick="changeSaiBabaImage('sai-baba-details.jpeg', 'SIZE & DETAILS')" aria-label="Show Sai Baba size and details">
+              <img src="sai-baba-details.jpeg" alt="Sai Baba size and details thumbnail">
+            </button>
+            <button type="button" onclick="changeSaiBabaImage('sai-baba-closeup.jpeg', 'CLOSE-UP VIEW')" aria-label="Show Sai Baba close-up">
+              <img src="sai-baba-closeup.jpeg" alt="Sai Baba close-up thumbnail">
+            </button>
+          </div>
+        </div>
+
+        <div class="statue-details">
+          <p class="statue-eyebrow">OBSIDIAN ARC LAB</p>
+          <h2 id="saiBabaProductName">Sai Baba</h2>
+          <p class="statue-details__desc">A detailed 3D printed Sai Baba statue, thoughtfully made for prayer spaces, meaningful gifts and refined home décor.</p>
+
+          <dl class="statue-specs">
+            <div><dt>Size</dt><dd>5, 7, 8, 10, 12, 13, 15, 17 or 19 cm</dd></div>
+            <div><dt>Material</dt><dd>Premium PLA</dd></div>
+            <div><dt>Finish</dt><dd>Pearlescent white</dd></div>
+          </dl>
+
+          <label for="saiBabaColourSelect">Available finish</label>
+          <select id="saiBabaColourSelect">
+            <option>Pearlescent White</option>
+            <!-- <option>Silver</option> -->
+          </select>
+
+          <p class="statue-details__note">Pricing depends on the selected size and customisation. Ask us for a quotation.</p>
+
+          <button class="statue-whatsapp" type="button" onclick="askSaiBabaWhatsapp()">
+            <span>ASK ON WHATSAPP</span><b>↗</b>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   <footer class="statue-footer">
     <span>OBSIDIAN ARC LAB</span>
     <p>Made with precision · Penang, Malaysia</p>
@@ -127,5 +192,51 @@
   <script src="catalogue.js"></script>
 <script src="contact-choice.js"></script>
 <script src="mobile-nav.js"></script>
+
+<script>
+  function openSaiBaba() {
+    const modal = document.getElementById('saiBabaModal');
+    modal.style.display = 'flex';
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function openSaiBabaWithKeyboard(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openSaiBaba();
+    }
+  }
+
+  function closeSaiBaba() {
+    const modal = document.getElementById('saiBabaModal');
+    modal.classList.remove('is-open');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function closeSaiBabaOnBackdrop(event) {
+    if (event.target.id === 'saiBabaModal') closeSaiBaba();
+  }
+
+  function changeSaiBabaImage(src, label) {
+    document.getElementById('saiBabaMainImg').src = src;
+    document.getElementById('saiBabaViewLabel').textContent = label;
+  }
+
+  function askSaiBabaWhatsapp() {
+    const finish = document.getElementById('saiBabaColourSelect').value;
+    const message = 'Hi, I would like to enquire about the Sai Baba 3D printed statue. Preferred finish: ' + finish + '.';
+
+    // Use the site's existing contact-choice flow when available.
+    if (typeof openContactChoice === 'function') {
+      openContactChoice(message);
+      return;
+    }
+
+    // Fallback: open WhatsApp with a pre-filled enquiry.
+    window.open('https://wa.me/?text=' + encodeURIComponent(message), '_blank', 'noopener');
+  }
+</script>
 </body>
 </html>
