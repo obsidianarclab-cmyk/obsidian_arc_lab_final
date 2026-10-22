@@ -81,6 +81,20 @@
         </div>
       </article>
 
+
+
+      <article class="statue-card" tabindex="0" role="button" onclick="openBabyGanesha()" onkeydown="openBabyGaneshaWithKeyboard(event)">
+        <div class="statue-card__image">
+          <img src="Baby_Ganesha5.jpg" alt="Baby Ganesha 3D printed statue, 20 cm hand-painted and white unpainted options">
+          <span class="statue-card__view">VIEW DETAILS <b>↗</b></span>
+        </div>
+        <div class="statue-card__body">
+          <p>3D PRINTED STATUE</p>
+          <h2>Baby Ganesha</h2>
+          <span>20 cm · White unpainted or hand painted</span>
+        </div>
+      </article>
+
       <article class="statue-card" tabindex="0" role="button" onclick="openSaiBaba()" onkeydown="openSaiBabaWithKeyboard(event)">
         <div class="statue-card__image">
           <img src="sai-baba-details.jpeg" alt="Sai Baba 3D printed statue with available sizes and finishes">
@@ -125,6 +139,66 @@
           <p class="statue-details__note">Pricing depends on the selected size and customisation. Ask us for a quotation.</p>
 
           <button class="statue-whatsapp" type="button" onclick="askWhatsapp()">
+            <span>ASK ON WHATSAPP</span><b>↗</b>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- Baby Ganesha product details -->
+  <div id="babyGaneshaModal" class="statue-modal" role="dialog" aria-modal="true" aria-labelledby="babyGaneshaProductName" onclick="closeBabyGaneshaOnBackdrop(event)" style="display:none;">
+    <div class="statue-modal__box">
+      <button class="statue-modal__close" type="button" onclick="closeBabyGanesha()" aria-label="Close Baby Ganesha product details">×</button>
+
+      <div class="statue-modal__grid">
+        <div class="statue-gallery">
+          <div class="statue-gallery__main">
+            <img id="babyGaneshaMainImg" src="Baby_Ganesha3.jpg" alt="Baby Ganesha 3D printed statue front view">
+            <span id="babyGaneshaViewLabel">FRONT VIEW</span>
+          </div>
+          <div class="statue-gallery__thumbs" aria-label="Baby Ganesha product image views">
+            <button type="button" onclick="changeBabyGaneshaImage('Baby_Ganesha3.jpg', 'FRONT VIEW')" aria-label="Show Baby Ganesha front view">
+              <img src="Baby_Ganesha3.jpg" alt="Baby Ganesha front view thumbnail">
+            </button>
+            <button type="button" onclick="changeBabyGaneshaImage('Baby_Ganesha1.jpg', 'LEFT SIDE VIEW')" aria-label="Show Baby Ganesha left side view">
+              <img src="Baby_Ganesha1.jpg" alt="Baby Ganesha left side view thumbnail">
+            </button>
+            <button type="button" onclick="changeBabyGaneshaImage('Baby_Ganesha2.jpg', 'RIGHT SIDE VIEW')" aria-label="Show Baby Ganesha right side view">
+              <img src="Baby_Ganesha2.jpg" alt="Baby Ganesha right side view thumbnail">
+            </button>
+            <button type="button" onclick="changeBabyGaneshaImage('Baby_Ganesha4.jpg', 'BACK VIEW')" aria-label="Show Baby Ganesha back view">
+              <img src="Baby_Ganesha4.jpg" alt="Baby Ganesha back view thumbnail">
+            </button>
+            <button type="button" onclick="changeBabyGaneshaImage('Baby_Ganesha5.jpg', 'PRODUCT DETAILS')" aria-label="Show Baby Ganesha product details">
+              <img src="Baby_Ganesha5.jpg" alt="Baby Ganesha product details thumbnail">
+            </button>
+          </div>
+        </div>
+
+        <div class="statue-details">
+          <p class="statue-eyebrow">OBSIDIAN ARC LAB</p>
+          <h2 id="babyGaneshaProductName">Baby Ganesha</h2>
+          <p class="statue-details__desc">A charming 3D printed Baby Ganesha statue designed for home, office, prayer spaces, decoration and meaningful gifting.</p>
+
+          <dl class="statue-specs">
+            <div><dt>Size</dt><dd>Approx. 20 cm height</dd></div>
+            <div><dt>Material</dt><dd>Premium PLA</dd></div>
+            <div><dt>Finish</dt><dd>White Unpainted / Hand Painted</dd></div>
+          </dl>
+
+          <label for="babyGaneshaFinishSelect">Available finish</label>
+          <select id="babyGaneshaFinishSelect">
+            <option>White Unpainted</option>
+            <option>Hand Painted</option>
+          </select>
+
+          <p class="statue-details__note">Made to order. Hand-painted pieces are individually finished by hand, so minor differences in colour, brushwork and finishing may occur. Fine layer lines may be visible due to the nature of FDM 3D printing.</p>
+
+          <button class="statue-whatsapp" type="button" onclick="askBabyGaneshaWhatsapp()">
             <span>ASK ON WHATSAPP</span><b>↗</b>
           </button>
         </div>
@@ -194,6 +268,52 @@
 <script src="mobile-nav.js"></script>
 
 <script>
+
+
+  function openBabyGanesha() {
+    const modal = document.getElementById('babyGaneshaModal');
+    modal.style.display = 'flex';
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function openBabyGaneshaWithKeyboard(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openBabyGanesha();
+    }
+  }
+
+  function closeBabyGanesha() {
+    const modal = document.getElementById('babyGaneshaModal');
+    modal.classList.remove('is-open');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function closeBabyGaneshaOnBackdrop(event) {
+    if (event.target.id === 'babyGaneshaModal') closeBabyGanesha();
+  }
+
+  function changeBabyGaneshaImage(src, label) {
+    document.getElementById('babyGaneshaMainImg').src = src;
+    document.getElementById('babyGaneshaMainImg').alt = 'Baby Ganesha 3D printed statue - ' + label.toLowerCase();
+    document.getElementById('babyGaneshaViewLabel').textContent = label;
+  }
+
+  function askBabyGaneshaWhatsapp() {
+    const finish = document.getElementById('babyGaneshaFinishSelect').value;
+    const message = 'Hi, I would like to enquire about the Baby Ganesha 3D printed statue (approx. 20 cm). Preferred finish: ' + finish + '.';
+
+    if (typeof openContactChoice === 'function') {
+      openContactChoice(message);
+      return;
+    }
+
+    window.open('https://wa.me/?text=' + encodeURIComponent(message), '_blank', 'noopener');
+  }
+
+
   function openSaiBaba() {
     const modal = document.getElementById('saiBabaModal');
     modal.style.display = 'flex';
